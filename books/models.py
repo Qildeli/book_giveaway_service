@@ -19,7 +19,7 @@ class Book(models.Model):
     cover = models.ImageField(upload_to='book_covers/')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     pickup_location = models.ForeignKey('PickupLocation', on_delete=models.SET_NULL, null=True)
-    status = models.CharField(max_length=10, choices=BOOK_STATUS_CHOICES, default='Available')
+    status = models.CharField(max_length=20, choices=BOOK_STATUS_CHOICES, default='Available')
     recipient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="received_books")
 
 

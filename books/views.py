@@ -1,6 +1,6 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Book, Author, Genre, BookCondition, PickupLocation, BookRequest
@@ -95,3 +95,24 @@ class BookRequestRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = BookRequest.objects.all()
     serializer_class = BookRequestSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class AcceptBookRequest(generics.GenericAPIView):
+    queryset = BookRequest.objects.all()
+    serializer_class = BookRequestSerializer
+    lookup_url_kwarg = 'request_id'
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def post(self, request, *args, **kwargs):
+        book_request = self.get_object()
+
+        book = book_request.book
+
+        if book.owner != request.user:
+            raise PermissionDenied("You do not have permission to accept this request.")
+
+        BookRequest.objects.filter(book=book).exclude(id=book_request.id).update(status=BookRequest.REJECTED)
+        book_request.status = BookRequest.ACCEPTED
+        book_request.save()
+
+        return Response({"message": "Request accepted successfully."}, status=status.HTTP_200_OK)

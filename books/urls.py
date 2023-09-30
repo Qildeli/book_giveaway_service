@@ -3,7 +3,7 @@ from .views import (BookListCreate, BookRetrieveUpdateDestroy, AuthorListCreate,
                     BookRequestListCreate, BookRequestRetrieveUpdateDestroy,
                     GenreListCreate, GenreRetrieveUpdateDestroy,
                     BookConditionListCreate, BookConditionRetrieveUpdateDestroy,
-                    PickupLocationListCreate, PickupLocationRetrieveUpdateDestroy)
+                    PickupLocationListCreate, PickupLocationRetrieveUpdateDestroy, AcceptBookRequest)
 
 urlpatterns = [
     path('books/', BookListCreate.as_view(), name='book-list-create'),
@@ -21,4 +21,5 @@ urlpatterns = [
     path('book-requests/', BookRequestListCreate.as_view(), name='book-request-list-create'),
     path('book-requests/<int:pk>/', BookRequestRetrieveUpdateDestroy.as_view(),
          name='book-request-retrieve-update-destroy'),
+    path('book-requests/<int:request_id>/accept/', AcceptBookRequest.as_view(), name='accept-book-request'),
 ]
