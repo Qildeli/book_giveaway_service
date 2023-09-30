@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: ["gunicorn", "book_giveaway_service.wsgi:application", "--bind", "0.0.0.0:8000"]
+    volumes:
+      - .:/app
+      - /Users/qildeli/PycharmProjects/book_giveaway_service/db.sqlite3:/app/db.sqlite3
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
