@@ -98,7 +98,7 @@ DATABASES = {
         'NAME': 'book_giveaway_service',
         'USER': 'postgres',
         'PASSWORD': 'test123',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }

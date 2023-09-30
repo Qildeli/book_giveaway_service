@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   web:
@@ -6,8 +6,18 @@ services:
     command: ["gunicorn", "book_giveaway_service.wsgi:application", "--bind", "0.0.0.0:8000"]
     volumes:
       - .:/app
-      - /Users/qildeli/PycharmProjects/book_giveaway_service/db.sqlite3:/app/db.sqlite3
     ports:
       - "8000:8000"
+    depends_on:
+      - db
+  db:
+    image: postgres
     environment:
-      - DEBUG=True
+      - POSTGRES_DB=book_giveaway_service
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=test123
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
