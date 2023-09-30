@@ -30,9 +30,9 @@ class PickupLocationSerializer(serializers.ModelSerializer):
 
 
 class BookSerializer(serializers.ModelSerializer):
-    genre = serializers.PrimaryKeyRelatedField(many=True, queryset=Genre.objects.all())
-    author = serializers.PrimaryKeyRelatedField(queryset=Author.objects.all())
-    condition = serializers.PrimaryKeyRelatedField(queryset=BookCondition.objects.all())
+    genre = serializers.StringRelatedField(many=True)
+    author = serializers.StringRelatedField()
+    condition = serializers.StringRelatedField()
 
     class Meta:
         model = Book
