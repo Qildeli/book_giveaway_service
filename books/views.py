@@ -1,5 +1,5 @@
 from rest_framework import generics, permissions, status
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -78,6 +78,10 @@ class PickupLocationListCreate(generics.ListCreateAPIView):
     serializer_class = PickupLocationSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    def perform_create(self, serializer):
+        # Ensure that the pickup location is associated only with the authenticated user
+        serializer.save(user=self.request.user)
+
 
 class PickupLocationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = PickupLocation.objects.all()
@@ -89,6 +93,12 @@ class BookRequestListCreate(generics.ListCreateAPIView):
     queryset = BookRequest.objects.all()
     serializer_class = BookRequestSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        book = Book.objects.get(pk=self.request.data['book'])
+        if book.owner == self.request.user:
+            raise ValidationError("You can't request your own book.")
+        serializer.save(user=self.request.user)
 
 
 class BookRequestRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
@@ -105,14 +115,18 @@ class AcceptBookRequest(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         book_request = self.get_object()
-
         book = book_request.book
 
         if book.owner != request.user:
             raise PermissionDenied("You do not have permission to accept this request.")
+
+        # Update the book status to Reserved
+        book.status = 'Reserved'
+        book.save()
 
         BookRequest.objects.filter(book=book).exclude(id=book_request.id).update(status=BookRequest.REJECTED)
         book_request.status = BookRequest.ACCEPTED
         book_request.save()
 
         return Response({"message": "Request accepted successfully."}, status=status.HTTP_200_OK)
+
