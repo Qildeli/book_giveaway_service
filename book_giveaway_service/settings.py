@@ -94,8 +94,12 @@ WSGI_APPLICATION = 'book_giveaway_service.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'book_giveaway_service',
+        'USER': 'postgres',
+        'PASSWORD': 'test123',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
