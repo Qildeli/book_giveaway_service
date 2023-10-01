@@ -36,7 +36,7 @@ Welcome to the Book Giveaway Service API. This service allows registered users t
 1. **Clone this repository**
 
     ```bash
-    git clone https://github.com/qildeli/Book_Giveaway_Service.git
+    git clone https://github.com/qildeli/book_giveaway_service.git
     ```
 
 2. **Navigate into the repository's directory**
