@@ -10,7 +10,6 @@ Welcome to the Book Giveaway Service API. This service allows registered users t
   - [Using Virtual Environment (venv)](#using-virtual-environment-venv)
   - [Using Docker](#using-docker)
 - [API Documentation](#api-documentation)
-- [Contributing](#contributing)
 
 ## Key Features
 - **User Authentication:** Simple registration using just an email.
