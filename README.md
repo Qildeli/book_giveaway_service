@@ -42,7 +42,7 @@ Welcome to the Book Giveaway Service API. This service allows registered users t
 2. **Navigate into the repository's directory**
 
     ```bash
-    cd Book_Giveaway_Service
+    cd book_giveaway_service
     ```
 
 3. **Create a virtual environment** (optional)
