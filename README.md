@@ -4,13 +4,13 @@
 Welcome to the Book Giveaway Service API. This service allows registered users to offer books for free and claim books offered by others. Non-registered users can view the list of available books. This repository includes user registration, book management, supporting resources, and more.
 
 ## Table of Contents
-- Features
-- Technology Stack
-- Getting Started
-  - Using Virtual Environment (venv)
-  - Using Docker
-- API Documentation
-- Contributing
+- [Features](#key-features)
+- [Technology Stack](#technology-stack)
+- [Getting Started](#setup)
+  - [Using Virtual Environment (venv)](#using-virtual-environment-venv)
+  - [Using Docker](#using-docker)
+- [API Documentation](#api-documentation)
+- [Contributing](#contributing)
 
 ## Key Features
 - **User Authentication:** Simple registration using just an email.
