@@ -26,6 +26,7 @@ class BookListCreate(generics.ListCreateAPIView):
     filterset_fields = ['author', 'genre', 'condition', 'status']
 
     def perform_create(self, serializer):
+        # Only authenticated users can add a book and associate with them
         if not self.request.user.is_authenticated:
             raise PermissionDenied("You must be logged in to add a book")
         serializer.save(owner=self.request.user)
@@ -79,7 +80,7 @@ class PickupLocationListCreate(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
-        # Ensure that the pickup location is associated only with the authenticated user
+        # The pickup location is associated with the authenticated user
         serializer.save(user=self.request.user)
 
 
@@ -96,6 +97,7 @@ class BookRequestListCreate(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         book = Book.objects.get(pk=self.request.data['book'])
+        # Prevent users from requesting their own book
         if book.owner == self.request.user:
             raise ValidationError("You can't request your own book.")
         serializer.save(user=self.request.user)
@@ -117,10 +119,11 @@ class AcceptBookRequest(generics.GenericAPIView):
         book_request = self.get_object()
         book = book_request.book
 
+        # Only the owner can accept a book request
         if book.owner != request.user:
             raise PermissionDenied("You do not have permission to accept this request.")
 
-        # Update the book status to Reserved
+        # Once a request is accepted, update book status and reject other requests
         book.status = 'Reserved'
         book.save()
 

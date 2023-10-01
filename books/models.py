@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
 
+# Model for storing book details
 class Book(models.Model):
     BOOK_STATUS_CHOICES = (
         ('Available', 'Available'),
@@ -16,17 +17,18 @@ class Book(models.Model):
     genre = models.ManyToManyField('Genre')
     author = models.ForeignKey('Author', on_delete=models.CASCADE)
     condition = models.ForeignKey('BookCondition', on_delete=models.CASCADE)
-    cover = models.ImageField(upload_to='book_covers/')
+    cover = models.ImageField(upload_to='book_covers/')  # For storing book cover images
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    pickup_location = models.ForeignKey('PickupLocation', on_delete=models.SET_NULL, null=True)
+    pickup_location = models.ForeignKey('PickupLocation', on_delete=models.SET_NULL, null=True)  # Location details for book retrieval
     status = models.CharField(max_length=20, choices=BOOK_STATUS_CHOICES, default='Available')
-    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="received_books")
+    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="received_books")  # For ownership decisions
 
 
     def __str__(self):
         return self.title
 
 
+# Model for storing author details
 class Author(models.Model):
     name = models.CharField(max_length=200, blank=False, db_index=True)
     biography = models.TextField(blank=True)  # Can be blank
@@ -36,6 +38,7 @@ class Author(models.Model):
         return self.name
 
 
+# Model for book genres
 class Genre(models.Model):
     name = models.CharField(max_length=100, unique=True, blank=False)  # Unique genre name
 
@@ -43,6 +46,7 @@ class Genre(models.Model):
         return self.name
 
 
+# Model for storing condition of the book (e.g. New, Used, etc.)
 class BookCondition(models.Model):
     condition_label = models.CharField(max_length=100, unique=True, blank=False) # Unique condition label
 
@@ -50,6 +54,7 @@ class BookCondition(models.Model):
         return self.condition_label
 
 
+# Model to manage book pickup location tied to each user
 class PickupLocation(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     address = models.CharField(max_length=245)
@@ -63,6 +68,7 @@ class PickupLocation(models.Model):
         return f"{self.address}, {self.city}, {self.state}, {self.country}"
 
 
+# Model to manage and track book requests and owner's decisions
 class BookRequest(models.Model):
     STATUS_CHOICES = (
         ('Pending', 'Pending'),

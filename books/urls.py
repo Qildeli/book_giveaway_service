@@ -18,6 +18,7 @@ urlpatterns = [
 
     path('pickup-locations/', PickupLocationListCreate.as_view(), name='pickup-location-list-create'),
     path('pickup-locations/<int:pk>/', PickupLocationRetrieveUpdateDestroy.as_view(), name='pickup-location-retrieve-update-destroy'),
+
     path('book-requests/', BookRequestListCreate.as_view(), name='book-request-list-create'),
     path('book-requests/<int:pk>/', BookRequestRetrieveUpdateDestroy.as_view(),
          name='book-request-retrieve-update-destroy'),
