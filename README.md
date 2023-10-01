@@ -1,7 +1,7 @@
 # Book Giveaway Service API
 
 ## Overview
-Welcome to the Book Giveaway Service API. This service allows registered users to offer books for free and claim books offered by others. Non-registered users can view the list of available books. This repository includes user registration, book management, supporting resources, and more.
+Book Giveaway Service API allows registered users to offer books for free and claim books offered by others. Non-registered users can view the list of available books. This repository includes user registration, book management, supporting resources, and more.
 
 ## Table of Contents
 - [Features](#key-features)
